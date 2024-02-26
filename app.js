@@ -8,6 +8,12 @@ const cors = require('cors');
 const xss = require('xss-clean');
 const rateLimiter = require('express-rate-limit');
 
+// Swagger
+
+const swaggerUI = require('swagger-ui-express');
+const YAML = require('yamljs');
+const swaggerDocument = YAML.load('./openapi.yaml');
+
 const express = require('express');
 const app = express();
 
@@ -35,8 +41,16 @@ app.use(helmet());
 app.use(cors());
 app.use(xss());
 
-//routes
+app.get('/', (req, res) => {
+  res
+    .status(200)
+    .send(
+      '<h2>Jobster Project</h2> <a href="/api/docs">Swagger Documentation</a>'
+    );
+});
+app.use('/api/docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
+//ro utes
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/jobs', authenticateUser, jobsRouter);
 

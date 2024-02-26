@@ -1,0 +1,137 @@
+openapi: 3.0.0
+info:
+  title: Jobster API
+  version: 1.0.0
+
+servers:
+  - url: 'https://jobsterproject-z782.onrender.com/api/v1'
+
+paths:
+  /auth/register:
+    post:
+      summary: Register User
+      tags:
+        - Authentication
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: User registered successfully
+
+  /auth/login:
+    post:
+      summary: Login User
+      tags:
+        - Authentication
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: User logged in successfully
+        '401':
+          description: Invalid credentials
+
+  /jobs:
+    post:
+      summary: Create Job
+      tags:
+        - Jobs
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                company:
+                  type: string
+                position:
+                  type: string
+      responses:
+        '201':
+          description: Job created successfully
+
+    get:
+      summary: Get All Jobs
+      tags:
+        - Jobs
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: List of all jobs
+
+  '/jobs/{id}':
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: ID of the job
+
+    get:
+      summary: Get Single Job
+      tags:
+        - Jobs
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Job details retrieved successfully
+
+    patch:
+      summary: Update Job
+      tags:
+        - Jobs
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+      responses:
+        '200':
+          description: Job updated successfully
+
+    delete:
+      summary: Delete Job
+      tags:
+        - Jobs
+      security:
+        - BearerAuth: []
+      responses:
+        '204':
+          description: Job deleted successfully
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+
+security:
+  - BearerAuth: []
