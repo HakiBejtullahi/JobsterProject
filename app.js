@@ -41,13 +41,8 @@ app.use(helmet());
 app.use(cors());
 app.use(xss());
 
-app.get('/', (req, res) => {
-  res
-    .status(200)
-    .send(
-      '<h2>Jobster Project</h2> <a href="/api/docs">Swagger Documentation</a>'
-    );
-});
+app.use(express.static('./public'));
+
 app.use('/api/docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 //ro utes
